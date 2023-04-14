@@ -1,5 +1,6 @@
 import { SearchBar } from '@/components/SearchBar'
 import { SideBar } from '@/components/SideBar'
+import { Slider } from '@/components/Slider'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
@@ -12,7 +13,11 @@ export default function Home() {
     <main className={`${inter.className}`}>
       <div className='flex bg-background'>
         <SideBar />
-        <SearchBar />
+        <div className='w-containerSection'>
+          <SearchBar />
+          <Slider isDetailed={true}/>
+          <Slider isDetailed={false}/>
+        </div>
       </div>
     </main>
   )
