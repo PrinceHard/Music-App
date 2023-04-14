@@ -9,7 +9,7 @@ import artistsIcon from '../assets/svg/Icon-5.svg'
 
 export const SideBar = () => {
     return (
-        <div className="bg-sidenav-gray top-0 left-0 bottom-0 w-14 h-full py-4 pl-3 text-gray-50 font-medium">
+        <div className="bg-sidenav-gray top-0 left-0 bottom-0 w-14 h-screen py-4 pl-3 text-gray-50 font-medium">
             <div className='flex justify-between pl-3 pr-6 mb-8'>
                 <div className='bg-cyan-500 w-6 h-6 rounded-full' />
                 <a href=""><Image priority src={dotsIcon} alt='options' /></a>
