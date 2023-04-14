@@ -19,8 +19,8 @@ module.exports = {
         'border': 'rgba(235, 235, 255, 0.05)'
       },
       width:{
-        '14': '14%'
-      }
+        'percent-14': '14%'
+      },
     },
   },
   plugins: [],
