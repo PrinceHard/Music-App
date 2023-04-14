@@ -21,8 +21,17 @@ module.exports = {
       minWidth:{
         'percent-14': '14%'
       },
+      maxWidth:{
+        'p': '200px'
+      },
+      fontSize:{
+        '10': '10px'
+      },
       width:{
         'containerSection': '86%'
+      },
+      borderRadius:{
+        '3': '3px'
       }
     },
   },
