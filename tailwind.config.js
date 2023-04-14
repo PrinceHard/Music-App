@@ -18,10 +18,15 @@ module.exports = {
         'light-gray': '#1F1F22',
         'border': 'rgba(235, 235, 255, 0.05)'
       },
-      width:{
+      minWidth:{
         'percent-14': '14%'
       },
+      width:{
+        'containerSection': '86%'
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide')
+  ],
 }

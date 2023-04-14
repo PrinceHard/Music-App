@@ -4,7 +4,7 @@ import playIcon from "../assets/svg/play-button.svg"
 
 export const CardDetailed = () => {
     return (
-        <div className="block relative w-64 h-96 overflow-hidden rounded-lg drop-shadow-xl">
+        <div className="inline-block relative w-64 h-96 overflow-hidden rounded-lg drop-shadow-xl">
             <div className="z-10 relative">
                 <Image src={cardImage} alt="card-image" width={256} height={258} />
             </div>

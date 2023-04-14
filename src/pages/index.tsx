@@ -1,6 +1,6 @@
-import { CardDetailed } from '@/components/CardDetailed'
 import { SearchBar } from '@/components/SearchBar'
 import { SideBar } from '@/components/SideBar'
+import { Slider } from '@/components/Slider'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
@@ -13,9 +13,9 @@ export default function Home() {
     <main className={`${inter.className}`}>
       <div className='flex bg-background'>
         <SideBar />
-        <div className='w-full'>
+        <div className='w-containerSection'>
           <SearchBar />
-          <CardDetailed />
+          <Slider isDetailed={true}/>
         </div>
       </div>
     </main>
