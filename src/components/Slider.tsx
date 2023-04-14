@@ -4,6 +4,7 @@ import Image from "next/image"
 import { CardDetailed } from "./CardDetailed"
 import { lista } from "@/data/list"
 import { useRef } from "react"
+import { Card } from "./Card"
 
 type Props = {
     isDetailed: boolean
@@ -14,7 +15,7 @@ export const Slider = ({ isDetailed }: Props) => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const slideLeft = () => {
-        scrollRef.current!.scrollLeft -=  1100
+        scrollRef.current!.scrollLeft -= 1100
     }
 
     const slideRight = () => {
@@ -43,8 +44,12 @@ export const Slider = ({ isDetailed }: Props) => {
                     ))}
                 </div>
                 :
-                <div>
-                    test
+                <div ref={scrollRef} className="max-w-full my-2 flex gap-10 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
+                    {lista.map((item, index) => (
+                        <div key={index}>
+                            <Card />
+                        </div>
+                    ))}
                 </div>
             }
         </div>

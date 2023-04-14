@@ -16,6 +16,7 @@ export default function Home() {
         <div className='w-containerSection'>
           <SearchBar />
           <Slider isDetailed={true}/>
+          <Slider isDetailed={false}/>
         </div>
       </div>
     </main>
