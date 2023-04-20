@@ -3,18 +3,37 @@ import rightArrow from "../assets/svg/TopNav-Icon-Button.svg"
 import Image from "next/image"
 import { CardDetailed } from "./CardDetailed"
 import { lista } from "@/data/list"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card } from "./Card"
-import axios from 'axios'
-import useSWR from 'swr'
-import { GetStaticProps, InferGetStaticPropsType } from "next"
-const qs = require('qs')
+import { useSession } from "next-auth/react"
+import spotifyApi from "../../lib/spotify"
 
 type Props = {
+    sectionTitle: string,
     isDetailed: boolean
 }
 
-export const Slider = ({isDetailed}: Props) => {
+export const Slider = ({sectionTitle,isDetailed}: Props) => {
+
+    const { data: session} = useSession();
+    const [featuredPlaylists, setFeaturedPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
+    const [categoryPlaylists, setCategoryPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
+
+    useEffect(() => {
+        if (spotifyApi.getAccessToken()) {
+            spotifyApi.getFeaturedPlaylists().then((data) => {
+                setFeaturedPlaylists(data.body.playlists.items)
+            }).catch((err) => {
+                console.error(err)
+            })
+
+            spotifyApi.getPlaylistsForCategory("toplists").then((data) => {
+                setCategoryPlaylists(data.body.playlists.items)
+            }).catch((err) => {
+                console.error(err)
+            })
+        }
+    }, [session, spotifyApi])
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +48,7 @@ export const Slider = ({isDetailed}: Props) => {
     return (
         <div className="w-full px-14 py-11 inline-block">
             <div className="w-full flex justify-between h-9">
-                <h1 className="text-slate-100 font-semibold leading-6 text-lg">Section Title</h1>
+                <h1 className="text-slate-100 font-semibold leading-6 text-lg">{sectionTitle}</h1>
                 <div className="flex gap-2">
                     <button onClick={slideLeft}>
                         <Image src={leftArrow} alt="leftArrowIcon" />
@@ -41,69 +60,21 @@ export const Slider = ({isDetailed}: Props) => {
             </div>
             {isDetailed ?
                 <div ref={scrollRef} className="max-w-full my-2 flex gap-16 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
-                    {lista.map((item, index) => (
-                        <div key={index}>
-                            <CardDetailed />
+                    {featuredPlaylists.map((playlist) => (
+                        <div key={playlist.id}>
+                            <CardDetailed playlist={playlist} />
                         </div>
                     ))}
                 </div>
                 :
                 <div ref={scrollRef} className="max-w-full my-2 flex gap-10 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
-                    {lista.map((item, index) => (
-                        <div key={index}>
-                            <Card />
+                    {categoryPlaylists.map((playlist) => (
+                        <div key={playlist.id}>
+                            <Card playlist={playlist}/>
                         </div>
                     ))}
                 </div>
             }
         </div>
     )
-}
-
-const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
-const clientSecret = process.env.NEXT_PUBLIC_CLIENT_SECRET;
-const authToken = Buffer.from(`${clientId}:${clientSecret}`, 'utf-8').toString('base64');
-
-const getAuth = async () => {
-    try {
-        const tokenUrl = 'https://accounts.spotify.com/api/token';
-        const data = qs.stringify({ 'grant_type': 'client_credentials' });
-
-        const response = await axios.post(tokenUrl, data, {
-            headers: {
-                'Authorization': `Basic ${authToken}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        return response.data.access_token;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const fetcher = async function getTracks(url: string) {
-    const accessToken = await getAuth();
-    const apiUrl = `${url}4aawyAB9vmqN3uQ7FjRGTy`;
-    try {
-        const response = await axios.get(apiUrl,
-            {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                }
-            })
-        return response.data
-    } catch (e) {
-        console.error(e)
-    }
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-
-    const { data } = useSWR('https://api.spotify.com/v1/albums/', fetcher)
-
-    return {
-        props: {
-            data,
-        }
-    }
 }

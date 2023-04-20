@@ -15,8 +15,8 @@ export default function Home() {
         <SideBar />
         <div className='w-containerSection'>
           <SearchBar />
-          <Slider isDetailed={true}/>
-          <Slider isDetailed={false}/>
+          <Slider sectionTitle={"Featured Playlists"} isDetailed={true}/>
+          <Slider sectionTitle={"Playlists Categorys"} isDetailed={false}/>
         </div>
       </div>
     </main>
