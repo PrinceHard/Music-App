@@ -16,7 +16,8 @@ module.exports = {
         'sidenav-gray': '#212124',
         'background': '#171719',
         'light-gray': '#1F1F22',
-        'border': 'rgba(235, 235, 255, 0.05)'
+        'border': 'rgba(235, 235, 255, 0.05)',
+        'hover': '#4C4E54'
       },
       minWidth:{
         'percent-14': '14%'
