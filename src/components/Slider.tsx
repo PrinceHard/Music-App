@@ -5,12 +5,16 @@ import { CardDetailed } from "./CardDetailed"
 import { lista } from "@/data/list"
 import { useRef } from "react"
 import { Card } from "./Card"
+import axios from 'axios'
+import useSWR from 'swr'
+import { GetStaticProps, InferGetStaticPropsType } from "next"
+const qs = require('qs')
 
 type Props = {
     isDetailed: boolean
 }
 
-export const Slider = ({ isDetailed }: Props) => {
+export const Slider = ({isDetailed}: Props) => {
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -54,4 +58,52 @@ export const Slider = ({ isDetailed }: Props) => {
             }
         </div>
     )
+}
+
+const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
+const clientSecret = process.env.NEXT_PUBLIC_CLIENT_SECRET;
+const authToken = Buffer.from(`${clientId}:${clientSecret}`, 'utf-8').toString('base64');
+
+const getAuth = async () => {
+    try {
+        const tokenUrl = 'https://accounts.spotify.com/api/token';
+        const data = qs.stringify({ 'grant_type': 'client_credentials' });
+
+        const response = await axios.post(tokenUrl, data, {
+            headers: {
+                'Authorization': `Basic ${authToken}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        return response.data.access_token;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const fetcher = async function getTracks(url: string) {
+    const accessToken = await getAuth();
+    const apiUrl = `${url}4aawyAB9vmqN3uQ7FjRGTy`;
+    try {
+        const response = await axios.get(apiUrl,
+            {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                }
+            })
+        return response.data
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+
+    const { data } = useSWR('https://api.spotify.com/v1/albums/', fetcher)
+
+    return {
+        props: {
+            data,
+        }
+    }
 }
