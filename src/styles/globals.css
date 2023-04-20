@@ -4,9 +4,15 @@
 
 @layer components {
     .nav-links li a {
-      @apply hover:text-cyan-500;
+      @apply focus:text-cyan-500;
     }
     .list-container li{
         @apply p-3 flex gap-3;
+    }
+    .active {
+      @apply text-cyan-500 hover:bg-hover rounded-lg cursor-pointer
+    }
+    .notActive{
+      @apply text-white hover:bg-hover rounded-lg cursor-pointer
     }
   }
