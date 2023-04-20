@@ -2,6 +2,12 @@ import Image from "next/image"
 import cardImage from "../assets/img/image-for-you.png"
 import playIcon from "../assets/svg/play-button.svg"
 
+type Props = {
+    data: {
+        name: string
+    }
+}
+
 export const CardDetailed = () => {
     return (
         <a href="">
