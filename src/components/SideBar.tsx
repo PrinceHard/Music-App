@@ -10,11 +10,15 @@ import { DropdownButton } from './DropdownButton'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useSpotify } from '@/hooks/useSpotify'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export const SideBar = () => {
-    const { data: session} = useSession();
+    const { data: session } = useSession();
     const [playlists, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([]);
     const spotifyApi = useSpotify();
+
+    const router = useRouter();
 
     useEffect(() => {
         if (spotifyApi.getAccessToken()) {
@@ -30,41 +34,47 @@ export const SideBar = () => {
         <div className="bg-sidenav-gray top-0 left-0 bottom-0 min-w-percent-14 h-screen py-4 pl-3 text-gray-50 font-medium sticky">
             <div className='flex justify-between pl-3 pr-6 mb-8'>
                 <DropdownButton />
-                <a href=""><Image priority src={dotsIcon} alt='options' /></a>
+                <Link href={"/"}><Image priority src={dotsIcon} alt='options' /></Link>
             </div>
-            <nav className="p-3 mb-8">
-                <ul className="nav-links list-container">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Explore</a></li>
-                    <li><a href="">Videos</a></li>
+            <nav className="pr-3 mb-8">
+                <ul className="list-container">
+                    <li className={router.pathname == "/" ? "active": "notActive"}>
+                        <Link href={"/"}>Home</Link>
+                    </li>
+                    <li className={router.pathname == "/explore" ? "active": "notActive"}>
+                        <Link href={"/explore"}>Explore</Link>
+                    </li>
+                    <li className={router.pathname == "/shows" ? "active": "notActive"}>
+                        <Link href={"/shows"}>Shows</Link>
+                    </li>
                 </ul>
             </nav>
             <nav className="text-sm">
                 <span className='text-xs text-gray-400'>MY COLLECTION</span>
                 <ul className='pr-3 pb-3 list-container'>
-                    <li>
+                    <li className='notActive'>
                         <Image src={radioIcon} alt='radioIcon' />
-                        <a href="">Mixes and Radio</a>
+                        <Link href={"/"}>Mixes and Radio</Link>
                     </li>
-                    <li>
+                    <li className='notActive'>
                         <Image src={playlistIcon} alt='playlistIcon' />
-                        <a href="">Playlists</a>
+                        <Link href={"/"}>Playlists</Link>
                     </li>
-                    <li>
+                    <li className='notActive'>
                         <Image src={albumsIcon} alt='albumsIcon' />
-                        <a href="">Albums</a>
+                        <Link href={"/"}>Albums</Link>
                     </li>
-                    <li>
+                    <li className='notActive'>
                         <Image src={tracksIcon} alt='tracksIcon' />
-                        <a href="">Tracks</a>
+                        <Link href={"/"}>Tracks</Link>
                     </li>
-                    <li>
+                    <li className='notActive'>
                         <Image src={videosIcon} alt='videosIcon' />
-                        <a href="">Videos</a>
+                        <Link href={"/"}>Videos</Link>
                     </li>
-                    <li>
+                    <li className='notActive'>
                         <Image src={artistsIcon} alt='artistsIcon' />
-                        <a href="">Artists</a>
+                        <Link href={"/"}>Artists</Link>
                     </li>
                 </ul>
             </nav>
@@ -72,8 +82,8 @@ export const SideBar = () => {
                 <span className='text-xs text-gray-400'>MY PLAYLISTS</span>
                 <ul className='pr-3 pb-3 list-container'>
                     {playlists.map((playlist) => (
-                        <li key={playlist.id}>
-                            <a href="">{playlist.name}</a>
+                        <li key={playlist.id} className='notActive'>
+                            <Link href={"/"}>{playlist.name}</Link>
                         </li>
                     ))}
                 </ul>
@@ -81,7 +91,7 @@ export const SideBar = () => {
             <nav className="text-sm">
                 <span className='text-xs text-gray-400'>Imported Albums</span>
                 <ul className='pr-3 pb-3 list-container'>
-                    <li><a href="">Mixes and Radio</a></li>
+                    <li><Link href={"/"}>Mixes and Radio</Link></li>
                 </ul>
             </nav>
         </div>
