@@ -1,6 +1,10 @@
 import Image from "next/image"
 
-export const Card = ({playlist}: {playlist: SpotifyApi.PlaylistObjectSimplified}) => {
+type Props = {
+    playlist: SpotifyApi.PlaylistObjectSimplified
+}
+
+export const Card = ({playlist}: Props) => {
     return (
         <a href="">
             <div className="h-80 w-52 py-2 drop-shadow-2xl rounded-3">

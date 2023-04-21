@@ -1,6 +1,7 @@
+import { CategoriesPlaylistSection } from '@/components/CategoriesPlaylistsSection'
+import { FeatPlaylistSection } from '@/components/FeatPlaylistSection'
 import { SearchBar } from '@/components/SearchBar'
 import { SideBar } from '@/components/SideBar'
-import { Slider } from '@/components/Slider'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
@@ -15,10 +16,12 @@ export default function Home() {
         <SideBar />
         <div className='w-containerSection'>
           <SearchBar />
-          <Slider sectionTitle={"Featured Playlists"} isDetailed={true}/>
-          <Slider sectionTitle={"Playlists Categorys"} isDetailed={false}/>
+          <FeatPlaylistSection/>
+          <CategoriesPlaylistSection categorie={"toplists"} name={"Top Lists"}/>
+          <CategoriesPlaylistSection categorie={"in_the_car"} name={"To Listen in the Car"} /> 
         </div>
       </div>
     </main>
   )
 }
+ 
