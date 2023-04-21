@@ -2,38 +2,20 @@ import leftArrow from "../assets/svg/TopNav-Icon-Button-1.svg"
 import rightArrow from "../assets/svg/TopNav-Icon-Button.svg"
 import Image from "next/image"
 import { CardDetailed } from "./CardDetailed"
-import { lista } from "@/data/list"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useRef } from "react"
 import { Card } from "./Card"
-import { useSession } from "next-auth/react"
-import spotifyApi from "../../lib/spotify"
+import { FeatPlaylistsContext } from "@/context/FeatPlaylistsContext"
+import { CategoriesPlaylistsContext } from "@/context/CategoriesPlaylistsContext"
 
 type Props = {
     sectionTitle: string,
-    isDetailed: boolean
+    isDetailed: boolean,
 }
 
-export const Slider = ({sectionTitle,isDetailed}: Props) => {
+export const Slider = ({ sectionTitle, isDetailed }: Props) => {
 
-    const { data: session} = useSession();
-    const [featuredPlaylists, setFeaturedPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
-    const [categoryPlaylists, setCategoryPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
-
-    useEffect(() => {
-        if (spotifyApi.getAccessToken()) {
-            spotifyApi.getFeaturedPlaylists().then((data) => {
-                setFeaturedPlaylists(data.body.playlists.items)
-            }).catch((err) => {
-                console.error(err)
-            })
-
-            spotifyApi.getPlaylistsForCategory("toplists").then((data) => {
-                setCategoryPlaylists(data.body.playlists.items)
-            }).catch((err) => {
-                console.error(err)
-            })
-        }
-    }, [session, spotifyApi])
+    const featuredPlaylists: SpotifyApi.PlaylistObjectSimplified[] = useContext(FeatPlaylistsContext)
+    const categoriesPlaylists: SpotifyApi.PlaylistObjectSimplified[] = useContext(CategoriesPlaylistsContext)
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +41,7 @@ export const Slider = ({sectionTitle,isDetailed}: Props) => {
                 </div>
             </div>
             {isDetailed ?
-                <div ref={scrollRef} className="max-w-full my-2 flex gap-16 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
+                <div ref={scrollRef} className="max-w-full my-2 flex gap-10 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
                     {featuredPlaylists.map((playlist) => (
                         <div key={playlist.id}>
                             <CardDetailed playlist={playlist} />
@@ -67,12 +49,12 @@ export const Slider = ({sectionTitle,isDetailed}: Props) => {
                     ))}
                 </div>
                 :
-                <div ref={scrollRef} className="max-w-full my-2 flex gap-10 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
-                    {categoryPlaylists.map((playlist) => (
-                        <div key={playlist.id}>
-                            <Card playlist={playlist}/>
-                        </div>
-                    ))}
+                <div ref={scrollRef} className="max-w-full my-2 flex gap-8 overflow-x-scroll items-center whitespace-nowrap scroll-smooth scrollbar-hide">
+                        {categoriesPlaylists.map((playlist) => (
+                            <div key={playlist.id}>
+                                <Card playlist={playlist}/>
+                            </div>
+                        ))}
                 </div>
             }
         </div>
