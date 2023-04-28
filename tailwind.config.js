@@ -25,6 +25,9 @@ module.exports = {
       maxWidth:{
         'p': '200px'
       },
+      maxHeight:{
+        '297': '297px'
+      },
       fontSize:{
         '10': '10px'
       },
