@@ -31,7 +31,7 @@ export const SideBar = () => {
     }, [session, spotifyApi])
 
     return (
-        <div className="bg-sidenav-gray top-0 left-0 bottom-0 min-w-percent-14 h-screen py-4 pl-3 text-gray-50 font-medium sticky">
+        <div className="bg-sidenav-gray top-0 left-0 bottom-0 min-w-percent-14 h-screen py-4 pl-3 text-gray-50 font-medium sticky overflow-y-scroll scroll-smooth scrollbar-hide">
             <div className='flex justify-between pl-3 pr-6 mb-8'>
                 <DropdownButton />
                 <Link href={"/"}><Image priority src={dotsIcon} alt='options' /></Link>
