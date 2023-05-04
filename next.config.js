@@ -21,6 +21,12 @@ module.exports = {
         hostname: 'mixed-media-images.spotifycdn.com',
         port: '',
         pathname: '/daily-drive/**'
+      },
+      {
+        protocol: 'https',
+        hostname: "mosaic.scdn.co",
+        port: '',
+        pathname: "/**"
       }
     ]
   }
