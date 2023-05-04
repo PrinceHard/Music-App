@@ -16,6 +16,6 @@
       @apply text-white hover:bg-hover rounded-lg cursor-pointer
     }
     .tr td {
-      @apply pt-5,
+      @apply py-3
     }
   }
