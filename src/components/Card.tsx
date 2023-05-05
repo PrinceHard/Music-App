@@ -1,12 +1,22 @@
+import { playlistIdState } from "@/atoms/playlistAtom";
 import Image from "next/image"
+import Link from "next/link";
+import { useRecoilState } from "recoil";
 
 type Props = {
     playlist: SpotifyApi.PlaylistObjectSimplified
 }
 
 export const Card = ({playlist}: Props) => {
+
+    const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+
+    function handlePlaylist(playlistId: string) {
+        setPlaylistId(playlistId)
+    }
+
     return (
-        <a href="">
+        <Link href={`/playlist/${playlist.id}`} onClick={() => handlePlaylist(playlist.id)}>
             <div className="h-80 w-52 py-2 drop-shadow-2xl rounded-3">
                 <div className="h-72">
                     <div className="w-full rounded-3">
@@ -19,6 +29,6 @@ export const Card = ({playlist}: Props) => {
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Slider } from "./Slider"
 import { useSession } from "next-auth/react";
 import spotifyApi from "../../lib/spotify";

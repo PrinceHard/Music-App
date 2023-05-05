@@ -11,11 +11,14 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useSpotify } from '@/hooks/useSpotify'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Router, {useRouter } from 'next/router'
+import { playlistIdState } from '@/atoms/playlistAtom'
+import { useRecoilState } from 'recoil'
 
 export const SideBar = () => {
     const { data: session } = useSession();
     const [playlists, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([]);
+    const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
     const spotifyApi = useSpotify();
 
     const router = useRouter();
@@ -30,8 +33,12 @@ export const SideBar = () => {
         }
     }, [session, spotifyApi])
 
+    function handlePlaylist(playlistId: string) {
+        setPlaylistId(playlistId)
+    }
+
     return (
-        <div className="bg-sidenav-gray top-0 left-0 bottom-0 min-w-percent-14 h-screen py-4 pl-3 text-gray-50 font-medium sticky">
+        <div className="bg-sidenav-gray top-0 left-0 bottom-0 min-w-percent-14 h-screen py-4 pl-3 text-gray-50 font-medium sticky overflow-y-scroll scroll-smooth scrollbar-hide">
             <div className='flex justify-between pl-3 pr-6 mb-8'>
                 <DropdownButton />
                 <Link href={"/"}><Image priority src={dotsIcon} alt='options' /></Link>
@@ -83,7 +90,7 @@ export const SideBar = () => {
                 <ul className='pr-3 pb-3 list-container'>
                     {playlists.map((playlist) => (
                         <li key={playlist.id} className='notActive'>
-                            <Link href={"/"}>{playlist.name}</Link>
+                            <Link href={`/playlist/${playlist.id}`} onClick={() => handlePlaylist(playlist.id)}>{playlist.name}</Link>
                         </li>
                     ))}
                 </ul>

@@ -1,9 +1,19 @@
 import Image from "next/image"
 import playIcon from "../assets/svg/play-button.svg"
+import { useRecoilState } from "recoil";
+import { playlistIdState } from "@/atoms/playlistAtom";
+import Link from "next/link";
 
 export const CardDetailed = ({playlist}: {playlist: SpotifyApi.PlaylistObjectSimplified}) => {
+
+    const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+
+    function handlePlaylist(playlistId: string) {
+        setPlaylistId(playlistId)
+    }
+
     return (
-        <a href="">
+        <Link href={`/playlist/${playlist.id}`} onClick={() => handlePlaylist(playlist.id)}>
             <div className="inline-block relative w-64 h-96 overflow-hidden rounded-lg drop-shadow-xl">
                 <div className="z-10 relative">
                     <Image src={playlist?.images[0]?.url} alt="card-image" width={256} height={258} />
@@ -24,6 +34,6 @@ export const CardDetailed = ({playlist}: {playlist: SpotifyApi.PlaylistObjectSim
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }
